@@ -6,10 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface CityService {
-    CityResponse createCity(CityRequest request);
-    CityResponse getCityById(Long id);
+    CityResponse createCity(CityRequest request) throws Exception;
+    CityResponse getCityById(Long id) throws Exception;
 
-    CityResponse updateCity(Long id, CityRequest request);
+    CityResponse updateCity(Long id, CityRequest request) throws Exception;
     void deleteCity(Long id);
     Page<CityResponse> getAllCities(Pageable pageable);
 
