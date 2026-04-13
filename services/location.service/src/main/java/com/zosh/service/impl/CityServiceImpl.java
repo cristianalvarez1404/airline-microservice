@@ -38,6 +38,11 @@ public class CityServiceImpl implements CityService {
     @Override
     public CityResponse updateCity(Long id, CityRequest request) throws Exception {
         City city = cityRepository.findById(id).orElseThrow(() -> new Exception("city not exist with give id"));
+
+        if(cityRepository.existsByCityCode(request.getCityCode())) {
+            throw new Exception("City with given code already exits");
+        }
+
         City updatedCity = CityMapper.updateEntity(city, request);
         City response = cityRepository.save(updatedCity);
 
@@ -45,32 +50,28 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public void deleteCity(Long id) {
-
+    public void deleteCity(Long id) throws Exception {
+        City city = cityRepository.findById(id).orElseThrow(() -> new Exception("city not exist with give id"));
+        cityRepository.delete(city);
     }
 
     @Override
     public Page<CityResponse> getAllCities(Pageable pageable) {
-        return null;
+        return cityRepository.findAll(pageable).map(CityMapper::toResponse);
     }
 
     @Override
     public Page<CityResponse> searchCities(String keyword, Pageable pageable) {
-        return null;
+        return cityRepository.searchByKeyword(keyword, pageable).map(CityMapper::toResponse);
     }
 
     @Override
     public Page<CityResponse> getCitiesByCountryCode(String countryCode, Pageable pageable) {
-        return null;
+        return cityRepository.findByCountryCodeIgnoreCase(countryCode, pageable).map(CityMapper::toResponse);
     }
 
     @Override
     public boolean cityExists(String cityCode) {
-        return false;
-    }
-
-    @Override
-    public boolean validateCityCode(String cityCode) {
-        return false;
+        return cityRepository.existsByCityCode(cityCode);
     }
 }
