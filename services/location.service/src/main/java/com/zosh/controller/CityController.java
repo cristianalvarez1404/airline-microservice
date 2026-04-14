@@ -73,5 +73,20 @@ public class CityController {
         return ResponseEntity.ok(cityService.searchCities(keyword, pageable));
     }
 
+    @GetMapping("/country/{countryCode}")
+    public ResponseEntity<Page<CityResponse>> getCitiesByCountryCode(
+            @RequestParam String countryCode,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) throws Exception {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(cityService.getCitiesByCountryCode(countryCode.toUpperCase(), pageable));
+    }
+
+    @GetMapping("/exists/{cityCode}")
+    public ResponseEntity<Boolean> checkCityExists(@PathVariable String cityCode){
+        return ResponseEntity.ok(cityService.cityExists(cityCode.toUpperCase()));
+    }
+
 
 }
