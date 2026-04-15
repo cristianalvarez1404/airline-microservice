@@ -5,8 +5,9 @@ import com.zosh.payload.response.AirportResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AirportRepository extends JpaRepository<Airport,Long> {
-    Airport findByIataCode(String iataCode);
+    Optional<Airport> findByIataCode(String iataCode);
     List<AirportResponse> findByCityId(Long cityId);
 }
