@@ -1,23 +1,83 @@
 package com.zosh.service;
+import com.zosh.config.JwtProvider;
+import com.zosh.enums.UserRole;
+import com.zosh.model.User;
 import com.zosh.payload.dto.UserDTO;
 import com.zosh.payload.response.AuthResponse;
-import com.zosh.repository.AuthRepository;
+import com.zosh.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService{
 
-    private final AuthRepository authRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
+    /*
+        * 1. Check if email already exists
+        * 2. Encode password using BCrypt
+        * 3. Save user in database
+        * 4. Generate JWT token
+        * 5. Return token and user information
+    * */
+
+    @Override
+    public AuthResponse signup(UserDTO req) throws Exception {
+        User existingUser = userRepository.findByEmail(req.getEmail());
+        if(existingUser != null){
+            throw new Exception("email already registered!");
+        }
+
+        if(req.getRole() == UserRole.ROLE_SYSTEM_ADMIN){
+            throw new Exception("You cannot sing up system admins.");
+        }
+
+        User newUser = User.builder()
+            .fullName(req.getFullName())
+            .email(req.getEmail())
+                .password(passwordEncoder.encode(req.getPassword()))
+            .phone(req.getPhone())
+            .role(req.getRole())
+            .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .lastLogin(LocalDateTime.now()).build();
+
+        User user = userRepository.save(newUser);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword());
+
+        String jwt = jwtProvider.generateToken(authentication, user.getId());
+
+        UserDTO userResponse = UserDTO.builder()
+                .id(user.getId())
+                .fullName(user.getFullName())
+                .password(user.getPassword())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .role(user.getRole())
+                .lastLogin(user.getLastLogin())
+                .build();
+
+
+        AuthResponse response = new AuthResponse();
+        response.setJwt(jwt);
+        response.setUser(userResponse);
+        response.setTitle("Welcome " + userResponse.getFullName());
+        response.setMessage("Registered successfully!");
+        return response;
+    }
 
     @Override
     public AuthResponse login(String email, String password) {
         return null;
     }
 
-    @Override
-    public AuthResponse signup(UserDTO req) {
-        return null;
-    }
+
 }
