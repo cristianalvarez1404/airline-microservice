@@ -6,12 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1ec7e2d2-72fe-408b-b58b-f65ec4571d26" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/com/zosh/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/zosh/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/com/zosh/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/zosh/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/com/zosh/repository/AuthRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/zosh/repository/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/com/zosh/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/zosh/service/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/com/zosh/service/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/zosh/service/AuthServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/com/zosh/service/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/zosh/service/impl/AuthServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +47,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.zosh.payload.request" />
       <recent name="com.zosh.payload.response" />
       <recent name="com.zosh.enums" />
     </key>

@@ -1,13 +1,18 @@
-package com.zosh.service;
+package com.zosh.service.impl;
 import com.zosh.config.JwtProvider;
 import com.zosh.enums.UserRole;
+import com.zosh.mapper.UserMapper;
 import com.zosh.model.User;
 import com.zosh.payload.dto.UserDTO;
 import com.zosh.payload.response.AuthResponse;
 import com.zosh.repository.UserRepository;
+import com.zosh.service.AuthService;
+import com.zosh.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +20,11 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService{
+public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CustomUserDetailsService customUserDetailsService;
     private final JwtProvider jwtProvider;
     /*
         * 1. Check if email already exists
@@ -55,29 +61,50 @@ public class AuthServiceImpl implements AuthService{
 
         String jwt = jwtProvider.generateToken(authentication, user.getId());
 
-        UserDTO userResponse = UserDTO.builder()
-                .id(user.getId())
-                .fullName(user.getFullName())
-                .password(user.getPassword())
-                .email(user.getEmail())
-                .phone(user.getPhone())
-                .role(user.getRole())
-                .lastLogin(user.getLastLogin())
-                .build();
-
-
         AuthResponse response = new AuthResponse();
         response.setJwt(jwt);
-        response.setUser(userResponse);
-        response.setTitle("Welcome " + userResponse.getFullName());
+        response.setUser(UserMapper.toDTO(user));
+        response.setTitle("Welcome " + user.getFullName());
         response.setMessage("Registered successfully!");
         return response;
     }
 
+    /*
+    * 1. Load user by email
+    * 2. Compare password with BCrypt
+    * 3. Update 'lastlogin' time
+    * 4. Generate JWT token
+    * 5. Return token and user information
+    * */
+
     @Override
-    public AuthResponse login(String email, String password) {
-        return null;
+    public AuthResponse login(String email, String password) throws Exception {
+        Authentication authentication = authenticate(email, password);
+
+        User user = userRepository.findByEmail(email);
+        user.setLastLogin(LocalDateTime.now());
+        userRepository.save(user);
+
+        String jwt = jwtProvider.generateToken(authentication, user.getId());
+
+        AuthResponse response = new AuthResponse();
+        response.setJwt(jwt);
+        response.setUser(UserMapper.toDTO(user));
+        response.setTitle("Welcome " + user.getFullName());
+        response.setMessage("Login successfully!");
+        return response;
     }
 
+    private Authentication authenticate(String email, String password) throws Exception {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
+        if(!passwordEncoder.matches(password, userDetails.getPassword())){
+            throw new Exception("invalid password!");
+        }
+
+        return new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities());
+    }
 }
