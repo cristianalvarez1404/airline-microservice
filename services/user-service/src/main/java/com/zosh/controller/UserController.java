@@ -1,14 +1,14 @@
 package com.zosh.controller;
 
+import com.zosh.mapper.UserMapper;
 import com.zosh.model.User;
 import com.zosh.payload.dto.UserDTO;
 import com.zosh.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -24,5 +24,15 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) throws Exception {
+        UserDTO user = userService.getUserById(userId);
+        return ResponseEntity.ok(user);
+    }
 
+    @GetMapping("")
+    public ResponseEntity<List<UserDTO>> getUsers(){
+        List<UserDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
 }

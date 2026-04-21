@@ -1,0 +1,14 @@
+server:
+  port: 5006
+spring:
+  application:
+    name: airline-core-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/airline-db
+    username: root
+    password: 1
+
+  jpa:
+    hibernate:
+      ddl-auto: update
