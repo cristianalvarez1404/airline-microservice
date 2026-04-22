@@ -1,5 +1,6 @@
 package com.zosh.model;
 
+import com.zosh.embeddable.Support;
 import com.zosh.enums.AirlineStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -43,6 +44,9 @@ public class Airline {
     private String alliance;
 
     private Long headquartersCityId;
+
+    @Embedded
+    private Support support;
 
     private Long updatedById;
 
