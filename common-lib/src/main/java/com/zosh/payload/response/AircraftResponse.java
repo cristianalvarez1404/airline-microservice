@@ -1,0 +1,32 @@
+package com.zosh.payload.response;
+import com.zosh.enums.AircraftStatus;
+import lombok.*;
+
+import java.time.LocalDate;
+
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class AircraftResponse {
+    private Long id;
+    private String code;
+    private String manufacturer;
+    private Integer seatingCapacity;
+    private Integer economySeats;
+    private Integer premiumEconomySeats;
+    private Integer businessSeats;
+    private Integer firstClassSeats;
+    private Integer rangeKm;
+    private Integer cruisingSpeedKmh;
+    private Integer maxAltitudeFt;
+    private Integer yearOfManufacture;
+    private LocalDate registrationDate;
+    private LocalDate nextMaintenanceDate;
+    private AircraftStatus status;
+    private Boolean isAvailable;
+    private Long airlineId;
+    private String airlineName;
+    private String airlineIataCode;
+}
