@@ -2,6 +2,7 @@ package com.zosh.payload.response;
 import com.zosh.enums.AircraftStatus;
 import lombok.*;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Getter
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 public class AircraftResponse {
     private Long id;
     private String code;
+    private String model;
     private String manufacturer;
     private Integer seatingCapacity;
     private Integer economySeats;
@@ -29,4 +31,10 @@ public class AircraftResponse {
     private Long airlineId;
     private String airlineName;
     private String airlineIataCode;
+    private Long currentAirportId;
+    private Integer totalSeats;
+    private Boolean requiresMaintenance;
+    private Boolean isOperational;
+    private Instant createdAt;
+    private Instant updatedAt;
 }
