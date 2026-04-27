@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface AircraftService {
     AircraftResponse createAircraft(AircraftRequest request, Long ownerId) throws Exception;
-    AircraftResponse getById(Long id);
-    List<AircraftResponse> listAllAircraftByOwner(Long ownerId);
-    AircraftResponse updateAircraft(AirlineRequest request, Long ownerId);
-    void deleteAircraft(Long id,Long ownerId);
+    AircraftResponse getById(Long id) throws Exception;
+    List<AircraftResponse> listAllAircraftByOwner(Long ownerId) throws Exception;
+    AircraftResponse updateAircraft(Long id,AircraftRequest request, Long ownerId) throws Exception;
+    void deleteAircraft(Long id,Long ownerId) throws Exception;
 
 }

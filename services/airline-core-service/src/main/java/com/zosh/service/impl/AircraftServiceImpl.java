@@ -44,22 +44,51 @@ public class AircraftServiceImpl implements AircraftService {
     }
 
     @Override
-    public AircraftResponse getById(Long id) {
-        return null;
+    public AircraftResponse getById(Long id) throws Exception {
+        Aircraft aircraft = aircraftRepository.findById(id).orElseThrow(() -> new Exception("Aircraft not exist with id"));
+        return AircraftMapper.toResponse(aircraft);
     }
 
     @Override
-    public List<AircraftResponse> listAllAircraftByOwner(Long ownerId) {
-        return List.of();
+    public List<AircraftResponse> listAllAircraftByOwner(Long ownerId) throws Exception {
+        Airline airline = airlineRepository.findByOwnerId(ownerId).orElseThrow(() -> new Exception("this owner don't have airline"));
+        return aircraftRepository.findByAirlineId(airline.getId())
+                .stream()
+                .map(AircraftMapper::toResponse).toList();
     }
 
     @Override
-    public AircraftResponse updateAircraft(AirlineRequest request, Long ownerId) {
-        return null;
+    public AircraftResponse updateAircraft(Long id, AircraftRequest request, Long ownerId) throws Exception {
+        Airline airline = airlineRepository.findByOwnerId(ownerId)
+                .orElseThrow(() -> new Exception("this owner don't have airline"));
+
+        Aircraft aircraft = aircraftRepository.findByIdAndAirlineId(id, airline.getId());
+
+        if(aircraft == null){
+            throw new Exception("Aircraft not exist with id");
+        }
+
+        if(request.getCode() != null
+                && !aircraft.getCode().equals(request.getCode())
+                && aircraftRepository.existByCode(request.getCode())){
+            throw new Exception("code already exist with other aircraft");
+        }
+
+        AircraftMapper.updateEntity(aircraft, request);
+
+        return AircraftMapper.toResponse(aircraftRepository.save(aircraft));
     }
 
     @Override
-    public void deleteAircraft(Long id, Long ownerId) {
+    public void deleteAircraft(Long id, Long ownerId) throws Exception {
+        Airline airline = airlineRepository.findByOwnerId(ownerId)
+                .orElseThrow(() -> new Exception("this owner don't have airline"));
+
+        Aircraft aircraft = aircraftRepository.findByIdAndAirlineId(id, airline.getId());
+        if(aircraft == null){
+            throw new Exception("Aircraft not exist with id");
+        }
+        aircraftRepository.delete(aircraft);
 
     }
 }
