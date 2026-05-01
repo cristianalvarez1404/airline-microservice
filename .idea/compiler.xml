@@ -6,10 +6,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="location.service" />
         <module name="common-lib" />
         <module name="user-service" />
         <module name="airline-core-service" />
+        <module name="flight-ops-service" />
+      </profile>
+      <profile name="Annotation profile for airline-microservice" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        </processorPath>
+        <module name="location.service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -17,6 +26,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="airline-core-service" options="-parameters" />
       <module name="common-lib" options="-parameters" />
+      <module name="flight-ops-service" options="-parameters" />
       <module name="location.service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>

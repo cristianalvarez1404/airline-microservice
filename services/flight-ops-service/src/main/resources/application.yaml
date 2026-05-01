@@ -1,0 +1,14 @@
+server:
+  port: 5007
+spring:
+  application:
+    name: flight-ops-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/flight-db
+    username: root
+    password: 1
+
+  jpa:
+    hibernate:
+      ddl-auto: update
