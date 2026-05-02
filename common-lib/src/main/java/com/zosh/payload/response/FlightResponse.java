@@ -20,6 +20,7 @@ public class FlightResponse {
     private AirlineResponse airline;
     private AircraftResponse aircraft;
     private AirportResponse arrivalAirport;
+    private AirportResponse departureAirport;
     private LocalDateTime departureTime;
     private LocalDateTime arrivalTime;
     private FlightStatus status;

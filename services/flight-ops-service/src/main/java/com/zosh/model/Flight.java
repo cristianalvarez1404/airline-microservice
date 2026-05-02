@@ -37,7 +37,7 @@ public class Flight {
     @Column(nullable = false)
     private Long arrivalAirportId;
 
-    private FlightStatus status;
+    private FlightStatus status = FlightStatus.SCHEDULED;
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
