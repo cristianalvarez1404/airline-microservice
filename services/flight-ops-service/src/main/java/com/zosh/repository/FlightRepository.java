@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface FlightRepository extends JpaRepository<Flight,Long> {
     @Query("""
         SELECT f FROM Flight f
@@ -20,5 +22,7 @@ public interface FlightRepository extends JpaRepository<Flight,Long> {
                                  @Param("arrId") Long arrId,
                                  Pageable pageable);
     boolean existsByFlightNumber(String flightNumber);
+    boolean existsByFlightNumberAndIdNot(String flightNumber, Long id);
+    Optional<Flight> findByAirlineIdAndId(Long airlineId, Long id);
 
 }
